@@ -1,8 +1,7 @@
 package kbohdanowicz.restapi.security
 
-import kbohdanowicz.restapi.controller.CommissionController
-import kbohdanowicz.restapi.logic.read.input.model.User
-import kbohdanowicz.restapi.logic.read.readJson
+import kbohdanowicz.restapi.mvc.controller.CommissionController
+import kbohdanowicz.restapi.dotenv.EnvironmentVariables
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,27 +19,24 @@ import org.springframework.security.core.userdetails.User as SpringUser
 @EnableWebSecurity
 class SecurityConfig {
     companion object {
-        private const val CREDENTIALS_OF_USERS_PATH = "input/credentials.json"
         private const val USER_ROLE = "USER"
     }
 
     @Autowired
-    private val authenticationEntryPoint: MyBasicAuthenticationEntryPoint? = null
+    private lateinit var authenticationEntryPoint: MyBasicAuthenticationEntryPoint
 
     @Bean
     fun userDetailsService(): InMemoryUserDetailsManager {
-        val credentialsOfUsers: List<User> = readJson(CREDENTIALS_OF_USERS_PATH)
-        val users = credentialsOfUsers.map { (username, password) ->
-            SpringUser.withUsername(username)
-                .password(passwordEncoder().encode(password))
-                .roles(USER_ROLE)
-                .build()
-        }.toTypedArray()
-        // val users = SpringUser.withUsername("user")
-        //     .password(passwordEncoder().encode("pass"))
-        //     .roles(USER_ROLE)
-        //     .build()
-        return InMemoryUserDetailsManager(*users)
+        val username = EnvironmentVariables.restApiUsername
+        val password = EnvironmentVariables.restApiPassword
+
+        val user = SpringUser
+            .withUsername(username)
+            .password(passwordEncoder().encode(password))
+            .roles(USER_ROLE)
+            .build()
+
+        return InMemoryUserDetailsManager(user)
     }
 
     @Bean
