@@ -1,7 +1,7 @@
 package kbohdanowicz.restapi.cache
 
-import kbohdanowicz.restapi.logic.read.input.readFeeWages
-import kbohdanowicz.restapi.logic.read.input.readTransactions
+import kbohdanowicz.restapi.mvc.logic.read.input.readFeeWages
+import kbohdanowicz.restapi.mvc.logic.read.input.readTransactions
 
 object CsvDataCache {
     private const val TRANSACTIONS_INPUT_PATH = "input/transactions.csv"

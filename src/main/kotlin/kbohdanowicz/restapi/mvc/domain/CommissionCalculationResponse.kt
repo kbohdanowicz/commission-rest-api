@@ -1,4 +1,4 @@
-package kbohdanowicz.restapi.model
+package kbohdanowicz.restapi.mvc.domain
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

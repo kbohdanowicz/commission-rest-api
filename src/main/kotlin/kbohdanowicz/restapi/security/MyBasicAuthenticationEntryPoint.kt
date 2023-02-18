@@ -17,7 +17,7 @@ class MyBasicAuthenticationEntryPoint : BasicAuthenticationEntryPoint() {
         response.addHeader("WWW-Authenticate", "Basic realm=\"$realmName\"")
         response.status = HttpServletResponse.SC_UNAUTHORIZED
         val writer = response.writer
-        writer.println("HTTP Status 401 - " + authEx.message)
+        writer.println("HTTP Status 401 - ${authEx.message}")
     }
 
     override fun afterPropertiesSet() {

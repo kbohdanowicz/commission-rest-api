@@ -1,16 +1,13 @@
-package kbohdanowicz.restapi.logic
+package kbohdanowicz.restapi.mvc.logic
 
 import kbohdanowicz.restapi.cache.CsvDataCache
 import kbohdanowicz.restapi.cache.TransactionsCache
-import kbohdanowicz.restapi.logic.read.input.dateFormatter
-import kbohdanowicz.restapi.model.CommissionCalculationResponse
+import kbohdanowicz.restapi.mvc.logic.read.input.defaultDateFormatter
+import kbohdanowicz.restapi.mvc.domain.CommissionCalculationResponse
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-fun calculateCommissionsForAllUsers(): List<CommissionCalculationResponse> =
-    calculateCommissionsForManyUsers(TransactionsCache.customerIds)
-
-fun calculateCommissionsForManyUsers(userIds: List<Long>): List<CommissionCalculationResponse> =
+fun calculateCommissionForManyUsers(userIds: List<Long>): List<CommissionCalculationResponse> =
     userIds.map { calculateCommissionForOneUser(it) }
 
 fun calculateCommissionForOneUser(userId: Long): CommissionCalculationResponse {
@@ -38,11 +35,11 @@ fun calculateCommissionForOneUser(userId: Long): CommissionCalculationResponse {
         numberOfTransactions = userTransactions.size.toLong(),
         totalValueOfTransactions = totalTransactionsValue.toString(),
         transactionsFeeValue = totalFeeWagesValue.toString(),
-        lastTransactionDate = lastTransaction.date.format(dateFormatter)
+        lastTransactionDate = lastTransaction.date.format(defaultDateFormatter)
     )
 }
 
-fun getFeePercentageForAmount(amount: BigDecimal): BigDecimal =
+private fun getFeePercentageForAmount(amount: BigDecimal): BigDecimal =
     CsvDataCache.feeWages
         .find { amount < it.transactionValueLessThanAmount }
         ?.feePercentageOfTransactionValue ?: BigDecimal(0)

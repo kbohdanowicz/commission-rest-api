@@ -1,4 +1,4 @@
-package kbohdanowicz.restapi.logic.read.input.model
+package kbohdanowicz.restapi.mvc.logic.read.input.model
 
 import java.math.BigDecimal
 

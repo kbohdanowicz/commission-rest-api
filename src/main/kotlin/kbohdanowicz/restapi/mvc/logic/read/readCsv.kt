@@ -1,4 +1,4 @@
-package kbohdanowicz.restapi.logic.read
+package kbohdanowicz.restapi.mvc.logic.read
 
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord

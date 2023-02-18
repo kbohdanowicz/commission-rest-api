@@ -1,10 +1,10 @@
-package kbohdanowicz.restapi.logic.read.input
+package kbohdanowicz.restapi.mvc.logic.read.input
 
 import kbohdanowicz.restapi.extensions.replaceCommaWithDot
 import kbohdanowicz.restapi.extensions.toLocalDateTime
-import kbohdanowicz.restapi.logic.read.input.model.FeeWage
-import kbohdanowicz.restapi.logic.read.input.model.Transaction
-import kbohdanowicz.restapi.logic.read.readCSV
+import kbohdanowicz.restapi.mvc.logic.read.input.model.FeeWage
+import kbohdanowicz.restapi.mvc.logic.read.input.model.Transaction
+import kbohdanowicz.restapi.mvc.logic.read.readCSV
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -24,11 +24,11 @@ fun readTransactions(path: String): List<Transaction> =
             customerFirstName = it[2],
             customerId = it[3].toLong(),
             customerLastName = it[4],
-            date = it[5].toLocalDateTime(dateFormatter),
+            date = it[5].toLocalDateTime(defaultDateFormatter),
         )
     }
 
-val dateFormatter: DateTimeFormatter =
+val defaultDateFormatter: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
 
 private const val PERCENTAGE_MULTIPLIER = "0.01"

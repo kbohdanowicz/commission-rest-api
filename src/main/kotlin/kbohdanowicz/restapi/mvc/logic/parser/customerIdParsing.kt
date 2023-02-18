@@ -1,21 +1,22 @@
-package kbohdanowicz.restapi.logic.parser
+package kbohdanowicz.restapi.mvc.logic.parser
 
 import kbohdanowicz.restapi.cache.TransactionsCache
-import kbohdanowicz.restapi.logic.parser.model.CustomerIdParsingResult
+
+private const val ID_SEPARATOR = ","
+private val allCustomerIdsTokens = listOf("", "ALL")
 
 fun parseCustomerId(customerId: String): CustomerIdParsingResult =
     when {
         customerId.contains(ID_SEPARATOR) ->
-            customerId.toListOfLongs()?.let {
+            parseAsListOfLongs(customerId)?.let {
                 parseManyCustomerIds(it)
             } ?: CustomerIdParsingResult.Invalid
 
-        customerId in allIdValues ->
-            CustomerIdParsingResult.All
+        customerId in allCustomerIdsTokens ->
+            CustomerIdParsingResult.Many(TransactionsCache.customerIds)
 
-        customerId.toLongOrNull() != null -> {
+        customerId.toLongOrNull() != null ->
             parseOneCustomerId(customerId.toLong())
-        }
 
         else ->
             CustomerIdParsingResult.Invalid
@@ -34,15 +35,12 @@ private fun parseOneCustomerId(customerId: Long): CustomerIdParsingResult =
         CustomerIdParsingResult.Invalid
 
 
-private fun String.toListOfLongs(): List<Long>? =
-    if (this.contains(",")) {
-        this.split(',')
+private fun parseAsListOfLongs(string: String): List<Long>? =
+    if (string.contains(",")) {
+        string.split(',')
             .map {
                 it.trim().toLongOrNull() ?: return null
             }
     } else {
         null
     }
-
-private const val ID_SEPARATOR = ","
-private val allIdValues: List<String> = listOf("", "ALL")

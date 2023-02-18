@@ -1,4 +1,4 @@
-package kbohdanowicz.restapi.logic.read
+package kbohdanowicz.restapi.mvc.logic.read
 
 fun getResourceAsString(path: String): String =
     object {}.javaClass.getResource("/$path")?.readText()
