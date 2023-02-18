@@ -1,6 +1,6 @@
 package kbohdanowicz.restapi.cache
 
-import kbohdanowicz.restapi.logic.read.input.model.Transaction
+import kbohdanowicz.restapi.mvc.logic.read.input.model.Transaction
 
 object TransactionsCache {
     operator fun get(id: Long): List<Transaction> =
