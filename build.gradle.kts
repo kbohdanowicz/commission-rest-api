@@ -1,5 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val springVersion: String by project
+val junitVersion: String by project
+val mockkVersion: String by project
+val commonsCsvVersion: String by project
+val serializationVersion: String by project
+val dotenvVersion: String by project
+
 plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
@@ -17,32 +24,30 @@ repositories {
 }
 
 dependencies {
-    // implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Spring
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:$springVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest:$springVersion")
+    implementation("org.springframework.boot:spring-boot-starter-security:$springVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
 
     // Test
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    testImplementation("org.springframework.security:spring-security-test:$springVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 
     // CSV
-    implementation("org.apache.commons:commons-csv:1.10.0")
+    implementation("org.apache.commons:commons-csv:$commonsCsvVersion")
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     // Dotenv
-    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    implementation("io.github.cdimascio:dotenv-kotlin:$dotenvVersion")
 }
 
 tasks.withType<KotlinCompile> {

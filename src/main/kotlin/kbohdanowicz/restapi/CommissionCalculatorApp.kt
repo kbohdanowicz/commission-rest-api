@@ -1,6 +1,0 @@
-package kbohdanowicz.restapi
-
-import org.springframework.boot.autoconfigure.SpringBootApplication
-
-@SpringBootApplication
-class CommissionCalculatorApp
