@@ -1,7 +1,10 @@
 package com.kbohdanowicz.restapi
 
-import com.kbohdanowicz.restapi.app.CommissionCalculatorApp
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+
+@SpringBootApplication
+class CommissionCalculatorApp
 
 fun main() {
     runApplication<CommissionCalculatorApp>()

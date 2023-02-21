@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.core.userdetails.User as SpringUser
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +30,7 @@ class SecurityConfig {
         val username = EnvironmentVariables.restApiUsername
         val password = EnvironmentVariables.restApiPassword
 
-        val user = SpringUser
+        val user = User
             .withUsername(username)
             .password(passwordEncoder().encode(password))
             .roles(USER_ROLE)
@@ -45,6 +45,7 @@ class SecurityConfig {
         http.also {
             it.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
             it.authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(CommissionController.COMMISSION_ENDPOINT)

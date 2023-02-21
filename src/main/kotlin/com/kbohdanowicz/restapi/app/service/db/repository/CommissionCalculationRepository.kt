@@ -1,4 +1,4 @@
-package com.kbohdanowicz.restapi.app.service.repository
+package com.kbohdanowicz.restapi.app.service.db.repository
 
 import com.kbohdanowicz.restapi.app.model.CommissionCalculationResponse
 

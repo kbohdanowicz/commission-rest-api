@@ -1,17 +1,21 @@
 package com.kbohdanowicz.restapi.app.controller
 
-import com.kbohdanowicz.restapi.app.controller.parsing.CustomerIdParsingResult
-import com.kbohdanowicz.restapi.app.controller.parsing.parseCustomerId
-import com.kbohdanowicz.restapi.app.service.CommissionCalculationService
-import com.kbohdanowicz.restapi.app.service.commission.calculateCommissionForManyUsers
-import com.kbohdanowicz.restapi.app.service.commission.calculateCommissionForOneUser
+import com.kbohdanowicz.restapi.app.service.calculation.CommissionCalculationService
+import com.kbohdanowicz.restapi.app.service.db.mongo.CommissionMongoService
+import com.kbohdanowicz.restapi.app.service.parsing.CustomerIdParsingService
+import com.kbohdanowicz.restapi.app.service.parsing.model.CustomerIdParsingResult
 import com.kbohdanowicz.restapi.extensions.toJson
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class CommissionController(val service: CommissionCalculationService) {
+class CommissionController(
+    @Autowired private val parsingService: CustomerIdParsingService,
+    @Autowired private val commissionCalculationService: CommissionCalculationService,
+    @Autowired private val mongoService: CommissionMongoService,
+) {
 
     companion object {
         const val COMMISSION_ENDPOINT = "/api"
@@ -21,16 +25,18 @@ class CommissionController(val service: CommissionCalculationService) {
     }
 
     @GetMapping(COMMISSION_ENDPOINT)
-    fun getAllUserCommissions(@RequestParam(COMMISSION_CUSTOMER_ID_PARAM) customerId: String): String =
-        when (val parsingResult = parseCustomerId(customerId)) {
+    fun getUserCommission(@RequestParam(COMMISSION_CUSTOMER_ID_PARAM) customerId: String): String =
+        when (val parsingResult = parsingService.parseCustomerId(customerId)) {
             is CustomerIdParsingResult.One ->
-                calculateCommissionForOneUser(parsingResult.customerId)
-                    .also { service.saveCalculation(it) }
+                commissionCalculationService
+                    .calculateCommissionForOneUser(parsingResult.customerId)
+                    .also { mongoService.saveCalculation(it) }
                     .toJson()
 
             is CustomerIdParsingResult.Many ->
-                calculateCommissionForManyUsers(parsingResult.customerIds)
-                    .onEach { service.saveCalculation(it) }
+                commissionCalculationService
+                    .calculateCommissionForManyUsers(parsingResult.customerIds)
+                    .onEach { mongoService.saveCalculation(it) }
                     .toJson()
 
             is CustomerIdParsingResult.Invalid ->

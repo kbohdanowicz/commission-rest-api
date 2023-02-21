@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val springVersion: String by project
+val springSecurityTestVersion: String by project
 val junitVersion: String by project
 val mockkVersion: String by project
 val commonsCsvVersion: String by project
@@ -8,16 +9,15 @@ val serializationVersion: String by project
 val dotenvVersion: String by project
 
 plugins {
-    id("org.springframework.boot") version "3.0.2"
-    id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-    kotlin("plugin.serialization") version "1.7.22"
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.serialization")
 }
 
 group = "kbohdanowicz"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -37,7 +37,7 @@ dependencies {
     // Test
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("org.springframework.security:spring-security-test:$springVersion")
+    testImplementation("org.springframework.security:spring-security-test:$springSecurityTestVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
 
     // CSV
@@ -51,9 +51,14 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile> {
+    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.targetCompatibility = JavaVersion.VERSION_17
+
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
+        apiVersion = "1.7"
+        languageVersion = "1.7"
     }
 }
 

@@ -1,4 +1,4 @@
-package com.kbohdanowicz.restapi.app.service.repository
+package com.kbohdanowicz.restapi.app.service.db.repository
 
 import com.kbohdanowicz.restapi.app.model.CommissionCalculation
 import com.kbohdanowicz.restapi.app.model.CommissionCalculationResponse
@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
 @Component
-class CommissionCalculationRepositoryImpl : CommissionCalculationRepository {
-
-    @Autowired
-    private lateinit var mongoTemplate: MongoTemplate
+class CommissionCalculationRepositoryImpl(
+    @Autowired private val mongoTemplate: MongoTemplate,
+) : CommissionCalculationRepository {
 
     override fun saveCalculation(commissionCalculationResponse: CommissionCalculationResponse) {
         with(commissionCalculationResponse) {

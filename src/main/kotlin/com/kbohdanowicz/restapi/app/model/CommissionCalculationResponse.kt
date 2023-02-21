@@ -5,24 +5,34 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CommissionCalculationResponse(
-    @SerialName("First name")
+    @SerialName(FIRST_NAME)
     val firstName: String,
 
-    @SerialName("Last name")
+    @SerialName(LAST_NAME)
     val lastName: String,
 
-    @SerialName("Customer ID")
+    @SerialName(CUSTOMER_ID)
     val customerId: Long,
 
-    @SerialName("Number of transactions")
+    @SerialName(NUMBER_OF_TRANSACTIONS)
     val numberOfTransactions: Long,
 
-    @SerialName("Total value of transactions")
+    @SerialName(TOTAL_VALUE_OF_TRANSACTIONS)
     val totalValueOfTransactions: String,
 
-    @SerialName("Transactions fee value")
+    @SerialName(TRANSACTIONS_FEE_VALUE)
     val transactionsFeeValue: String,
 
-    @SerialName("Last transaction date")
+    @SerialName(LAST_TRANSACTION_DATE)
     val lastTransactionDate: String,
-)
+) {
+    companion object {
+        const val FIRST_NAME = "First name"
+        const val LAST_NAME = "Last name"
+        const val CUSTOMER_ID = "Customer ID"
+        const val NUMBER_OF_TRANSACTIONS = "Number of transactions"
+        const val TOTAL_VALUE_OF_TRANSACTIONS = "Total value of transactions"
+        const val TRANSACTIONS_FEE_VALUE = "Transactions fee value"
+        const val LAST_TRANSACTION_DATE = "Last transaction date"
+    }
+}
