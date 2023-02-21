@@ -6,6 +6,8 @@ import com.kbohdanowicz.restapi.app.service.parsing.CustomerIdParsingService
 import com.kbohdanowicz.restapi.app.service.parsing.model.CustomerIdParsingResult
 import com.kbohdanowicz.restapi.extensions.toJson
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -21,26 +23,30 @@ class CommissionController(
         const val COMMISSION_ENDPOINT = "/api"
         const val COMMISSION_CUSTOMER_ID_PARAM = "customer_id"
 
-        const val INVALID_CUSTOMER_ID_JSON_MESSAGE = "{\"Error\": \"Customer ID is invalid\"}"
+        private val INVALID_CUSTOMER_ID_MESSAGE = mapOf("Error" to "Customer ID is invalid")
     }
 
     @GetMapping(COMMISSION_ENDPOINT)
-    fun getUserCommission(@RequestParam(COMMISSION_CUSTOMER_ID_PARAM) customerId: String): String =
+    fun getUserCommission(@RequestParam(COMMISSION_CUSTOMER_ID_PARAM) customerId: String): ResponseEntity<String> =
         when (val parsingResult = parsingService.parseCustomerId(customerId)) {
             is CustomerIdParsingResult.One ->
                 commissionCalculationService
                     .calculateCommissionForOneUser(parsingResult.customerId)
                     .also { mongoService.saveCalculation(it) }
                     .toJson()
+                    .let { ResponseEntity(it, HttpStatus.OK) }
 
             is CustomerIdParsingResult.Many ->
                 commissionCalculationService
                     .calculateCommissionForManyUsers(parsingResult.customerIds)
                     .onEach { mongoService.saveCalculation(it) }
                     .toJson()
+                    .let { ResponseEntity(it, HttpStatus.OK) }
 
             is CustomerIdParsingResult.Invalid ->
-                INVALID_CUSTOMER_ID_JSON_MESSAGE
-                    .toJson()
+                ResponseEntity(
+                    INVALID_CUSTOMER_ID_MESSAGE.toJson(),
+                    HttpStatus.BAD_REQUEST
+                )
         }
 }

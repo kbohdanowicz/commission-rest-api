@@ -29,12 +29,14 @@ class CustomerIdParsingServiceImpl : CustomerIdParsingService {
                 CustomerIdParsingResult.Invalid
         }
 
-    private fun parseManyCustomerIds(customerIds: List<Long>): CustomerIdParsingResult =
-        if (customerIds.all { TransactionsCache.isCustomerIdValid(it) }) {
-            CustomerIdParsingResult.Many(customerIds)
+    private fun parseManyCustomerIds(customerIds: List<Long>): CustomerIdParsingResult {
+        val validCustomerIds = customerIds.filter { TransactionsCache.isCustomerIdValid(it) }
+        return if (validCustomerIds.isNotEmpty()) {
+            CustomerIdParsingResult.Many(validCustomerIds)
         } else {
             CustomerIdParsingResult.Invalid
         }
+    }
 
     private fun parseOneCustomerId(customerId: Long): CustomerIdParsingResult =
         if (TransactionsCache.isCustomerIdValid(customerId)) {
