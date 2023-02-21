@@ -6,14 +6,14 @@
 
 ## Installation
 Create `.env` file with variables:
-   - `API_USERNAME`
-   - `API_PASSWORD`
+   - `REST_API_USERNAME`
+   - `REST_API_PASSWORD`
    - `MONGO_USERNAME`
    - `MONGO_PASSWORD`
 
 ## Running
 
-1. Run mongodb:
+1. Run docker compose file:
    ```shell
    docker compose up
    ```
