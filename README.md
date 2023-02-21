@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Java 17
-- Gradle
+- Docker
 
 ## Installation
 Create `.env` file with variables:

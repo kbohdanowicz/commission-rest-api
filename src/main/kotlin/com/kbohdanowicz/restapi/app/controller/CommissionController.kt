@@ -7,6 +7,7 @@ import com.kbohdanowicz.restapi.app.service.parsing.model.CustomerIdParsingResul
 import com.kbohdanowicz.restapi.extensions.toJson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -26,22 +27,20 @@ class CommissionController(
         private val INVALID_CUSTOMER_ID_MESSAGE = mapOf("Error" to "Customer ID is invalid")
     }
 
-    @GetMapping(COMMISSION_ENDPOINT)
+    @GetMapping(COMMISSION_ENDPOINT, produces=[MediaType.APPLICATION_JSON_VALUE])
     fun getUserCommission(@RequestParam(COMMISSION_CUSTOMER_ID_PARAM) customerId: String): ResponseEntity<String> =
         when (val parsingResult = parsingService.parseCustomerId(customerId)) {
             is CustomerIdParsingResult.One ->
                 commissionCalculationService
                     .calculateCommissionForOneUser(parsingResult.customerId)
                     .also { mongoService.saveCalculation(it) }
-                    .toJson()
-                    .let { ResponseEntity(it, HttpStatus.OK) }
+                    .let { ResponseEntity(it.toJson(), HttpStatus.OK) }
 
             is CustomerIdParsingResult.Many ->
                 commissionCalculationService
                     .calculateCommissionForManyUsers(parsingResult.customerIds)
                     .onEach { mongoService.saveCalculation(it) }
-                    .toJson()
-                    .let { ResponseEntity(it, HttpStatus.OK) }
+                    .let { ResponseEntity(it.toJson(), HttpStatus.OK) }
 
             is CustomerIdParsingResult.Invalid ->
                 ResponseEntity(

@@ -31,10 +31,13 @@ class CustomerIdParsingServiceImpl : CustomerIdParsingService {
 
     private fun parseManyCustomerIds(customerIds: List<Long>): CustomerIdParsingResult {
         val validCustomerIds = customerIds.filter { TransactionsCache.isCustomerIdValid(it) }
-        return if (validCustomerIds.isNotEmpty()) {
-            CustomerIdParsingResult.Many(validCustomerIds)
-        } else {
-            CustomerIdParsingResult.Invalid
+        return when {
+            validCustomerIds.isEmpty() ->
+                CustomerIdParsingResult.Invalid
+            validCustomerIds.size == 1 ->
+                CustomerIdParsingResult.One(validCustomerIds.first())
+            else ->
+                CustomerIdParsingResult.Many(validCustomerIds)
         }
     }
 
