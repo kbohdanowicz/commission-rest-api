@@ -24,7 +24,10 @@ class CommissionController(
         const val COMMISSION_ENDPOINT = "/api"
         const val COMMISSION_CUSTOMER_ID_PARAM = "customer_id"
 
-        private val INVALID_CUSTOMER_ID_MESSAGE = mapOf("Error" to "Customer ID is invalid")
+        val INVALID_CUSTOMER_ID_MESSAGE =
+            mapOf(
+                "Error" to "Customer ID is invalid"
+            ).toJson()
     }
 
     @GetMapping(COMMISSION_ENDPOINT, produces=[MediaType.APPLICATION_JSON_VALUE])
@@ -44,7 +47,7 @@ class CommissionController(
 
             is CustomerIdParsingResult.Invalid ->
                 ResponseEntity(
-                    INVALID_CUSTOMER_ID_MESSAGE.toJson(),
+                    INVALID_CUSTOMER_ID_MESSAGE,
                     HttpStatus.BAD_REQUEST
                 )
         }

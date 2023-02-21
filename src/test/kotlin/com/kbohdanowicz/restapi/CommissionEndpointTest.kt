@@ -50,14 +50,14 @@ class CommissionEndpointTest {
     }
 
     @Test
-    fun `Should return 401 when accessing endpoint without credentials`() {
+    fun `Should return 401 status code when accessing endpoint without credentials`() {
         mvc.perform(createGetCommissionRequest("1"))
             .andExpect(status().isUnauthorized)
     }
 
     @Test
     @WithMockUser
-    fun `Should return one commission for one user`() {
+    fun `Should return one commission for one valid user`() {
         with(CommissionCalculationResponse) {
             mvc.perform(createGetCommissionRequest("1"))
                 .andExpect(status().isOk)
@@ -86,7 +86,7 @@ class CommissionEndpointTest {
 
     @Test
     @WithMockUser
-    fun `Should return one commission for one user valid user and one invalid user`() {
+    fun `Should return one commission for one valid user and one invalid user`() {
         with(CommissionCalculationResponse) {
             mvc.perform(createGetCommissionRequest("1, 7"))
                 .andExpect(status().isOk)
@@ -99,11 +99,11 @@ class CommissionEndpointTest {
 
     @Test
     @WithMockUser
-    fun `Should return error message for invalid user`() {
+    fun `Should return an error message for an invalid user`() {
         mvc.perform(createGetCommissionRequest("7"))
             .andExpect(status().isBadRequest)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andReturn().response.errorMessage.also { println("===========================================$it") }
+            .andExpect(content().json(CommissionController.INVALID_CUSTOMER_ID_MESSAGE))
     }
 
     private fun createGetCommissionRequest(customerId: String) =
