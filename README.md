@@ -5,13 +5,13 @@
 - Docker
 
 ## Installation
-Create `.env` file with variables:
+1. Create `.env` file with environment variables (they can contain any string value):
    - `REST_API_USERNAME`
    - `REST_API_PASSWORD`
    - `MONGO_USERNAME`
    - `MONGO_PASSWORD`
 
-These variables can contain any string value
+2. Make sure `JAVA_HOME` environment variable points to Java 17
 
 ## Running
 1. Run docker compose file:
