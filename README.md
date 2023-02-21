@@ -11,15 +11,16 @@ Create `.env` file with variables:
    - `MONGO_USERNAME`
    - `MONGO_PASSWORD`
 
-## Running
+These variables can contain any string value
 
+## Running
 1. Run docker compose file:
    ```shell
    docker compose up
    ```
 2. Build application:
    ```shell
-   gradle build
+   .\gradlew build
    ```
 3. Run application:
    ```shell
@@ -29,5 +30,5 @@ Create `.env` file with variables:
 # Testing
 Run:
 ```shell
-gradle test
+.\gradlew test
 ```
