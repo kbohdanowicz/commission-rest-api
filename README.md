@@ -47,9 +47,9 @@ Run:
 
 ## Usage
 Endpoint `api` provided with a key `customer_id` allows you to search for a commission data of users in a few ways:
-- by entering an identification number ranging from 1 to 5 (e.g. "2")
-- by entering several identification numbers separated by a comma (e.g. "1, 5")
-- by entering the string "ALL" or an empty string to search for commission data of all users
+- by entering an identification number ranging from 1 to 5 (e.g. "2"),
+- by entering several identification numbers separated by a comma (e.g. "1, 5"),
+- by entering the string "ALL" or an empty string to search for commission data of all users.
 
 ### Example
 #### Calculate data of a user with identification number "3"
