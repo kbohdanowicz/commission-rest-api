@@ -37,7 +37,9 @@ REST API that allows you to calculate commission for transactions made by a give
    java -jar build/libs/restApi-0.0.1-SNAPSHOT.jar
    ```
 4. App is available at:
-   `http://localhost:8080`
+   ```
+   http://localhost:8080
+   ```
 
 ### Testing
 Run:
