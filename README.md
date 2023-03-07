@@ -1,6 +1,6 @@
 # Commission Calculator REST API
 
-REST API that allows you to calculate commission for transactions made by a given bank customer. Includes a sample data set.
+REST API for calculating commission for transactions made by a given bank customer. Includes a sample data set
 
 ## Built With:
 - Kotlin
